@@ -1,0 +1,283 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@theme {
+  --color-paper: #F4F1EA;
+  --color-ink: #0E0E0E;
+  --color-signal: #FFC400;
+  --color-ink-soft: #4A4741;
+  --color-line: rgba(14, 14, 14, 0.16);
+  --color-paper-dark: #E9E4D9;
+  --color-line-on-dark: rgba(244, 241, 234, 0.16);
+
+  --font-display: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 400ms;
+}
+
+:root {
+  --paper: #F4F1EA;
+  --ink: #0E0E0E;
+  --signal: #FFC400;
+  --ink-soft: #4A4741;
+  --line: rgba(14, 14, 14, 0.16);
+  --paper-dark: #E9E4D9;
+  --line-on-dark: rgba(244, 241, 234, 0.16);
+
+  /* Motion Tokens */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 400ms;
+
+  /* Header & Section Tokens */
+  --header-h: 64px;
+  --header-offset: 64px;
+  --section-py: 48px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 72px;
+    --header-offset: 72px;
+    --section-py: clamp(40px, 7vh, 96px);
+  }
+}
+
+/* Universal discipline: Zero border radius except where explicitly rounded */
+*, *::before, *::after {
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+/* Exception: credit pill is fully rounded */
+.rounded-full,
+[data-pill="true"] {
+  border-radius: 9999px !important;
+}
+
+html {
+  /* Scroll padding bottom prevents fixed bottom bar from covering focused inputs */
+  scroll-padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Touch Hygiene & Tap Highlight */
+button,
+a,
+input,
+textarea,
+select,
+[role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Headings text-wrap balance */
+h1, h2, h3, h4, h5, h6,
+.text-display,
+.text-h1,
+.text-h2,
+.text-h3 {
+  text-wrap: balance;
+}
+
+/* Handles & IDs overflow wrap */
+[data-handle],
+.handle-text {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Safe areas */
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+.pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+.px-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Smooth scroll only when prefers-reduced-motion is not reduce */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Visible focus ring on all interactive elements: 2px outline, 2px offset */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Selection: signal background with ink text */
+::selection {
+  background-color: var(--signal);
+  color: var(--ink);
+}
+
+/* Fluid Typography Utilities */
+.text-display {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(2.75rem, min(8vw, 13vh), 7rem);
+  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.text-h1 {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(2rem, min(4.4vw, 7.5vh), 3.75rem);
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.text-h2 {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(2rem, min(4.4vw, 7.5vh), 3.75rem);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.text-h3 {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.text-body {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
+  line-height: 1.6;
+}
+
+.text-small {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.text-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+/* Diagonal hatch pattern for placeholder tiles (CSS only) */
+.placeholder-hatch {
+  background-color: var(--paper-dark);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(14, 14, 14, 0.07),
+    rgba(14, 14, 14, 0.07) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}
+
+/* Scroll Reveal Tokens & Rules */
+.js .reveal:not(.is-in) {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.reveal {
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+
+/* Hero Highlight Draw Animation */
+@keyframes highlight-sweep {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.highlight-animated {
+  position: relative;
+  background-color: transparent !important;
+  display: inline-block;
+}
+
+.highlight-animated::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--signal);
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: -1;
+  animation: highlight-sweep 500ms var(--ease-out) 300ms forwards;
+}
+
+/* Press & Focus Feedback on Interactive Elements */
+button:active:not(:disabled),
+a:active:not([aria-disabled="true"]) {
+  transform: scale(0.98);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+/* Overscroll containment */
+.overscroll-contain {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Global Reduced-Motion Rule */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  button:active, a:active {
+    transform: none !important;
+  }
+
+  .reveal,
+  .js .reveal:not(.is-in) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .highlight-animated::before {
+    animation: none !important;
+    transform: scaleX(1) !important;
+  }
+}

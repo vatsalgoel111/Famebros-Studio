@@ -1,11 +1,34 @@
-<div align="center">
+# Famebros Studio
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+Production website codebase for **Famebros Studio**, a Mumbai social media and creative studio managing the Instagram feeds of leading brands.
 
-  <h1>Built with AI Studio</h2>
+## Tech Stack
+- Next.js (App Router) + TypeScript
+- Tailwind CSS
+- Data-driven architecture (Server Components by default)
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+---
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## How to Add a New Client
 
-</div>
+All client data is centralized in `src/data/clients.ts`. Adding a client requires only a single object entry in the `clients` array:
+
+```typescript
+// src/data/clients.ts
+{
+  id: 'unique-client-slug',
+  handle: '@brandhandle',
+  displayName: 'Brand Name',
+  industry: 'jewellery', // 'jewellery' | 'fashion' | 'hospitality' | 'retail' | 'other'
+  city: 'Mumbai',
+  coverImage: '/images/clients/brand-cover.jpg',
+  servicesWeRun: ['Reels Production', 'Community Management', 'Content Strategy'],
+  hasPermission: true,  // Set to true once the brand grants public showcase rights
+  isPlaceholder: false, // Set to false for real live clients
+}
+```
+
+### Live Clients vs Placeholders
+- **`isPlaceholder: true` & `hasPermission: false`**: Used for drafts and template demonstration.
+- **`getLiveClients()`**: Filter helper that strictly returns clients where `hasPermission === true` and `isPlaceholder === false`.
+- Any counter on the website (e.g. number of active partner brands) automatically derives its count from `getLiveClients().length`. Never hardcode client counts.

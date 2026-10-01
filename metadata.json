@@ -1,0 +1,6 @@
+{
+  "name": "Famebros Studio",
+  "description": "Famebros Studio runs the Instagram presence of creators and brands in Mumbai — shoots, edits, and social management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
