@@ -57,14 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js');",
-          }}
-        />
-      </head>
+    <html lang="en" className="js" suppressHydrationWarning>
       <body
         className="min-h-screen bg-paper text-ink font-body selection:bg-signal selection:text-ink"
         suppressHydrationWarning

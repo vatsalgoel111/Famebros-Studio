@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { siteConfig } from '@/data/site';
@@ -91,139 +92,145 @@ export default function Header() {
 
   const closeMenu = () => setMobileMenuOpen(false);
 
-  return (
-    <header
-      ref={headerRef}
-      className={cn(
-        'sticky top-0 z-40 w-full border-b border-line bg-paper pt-safe pl-[max(0rem,env(safe-area-inset-left))] pr-[max(0rem,env(safe-area-inset-right))] transition-transform duration-[var(--dur-base)] ease-[var(--ease-out)]',
-        isHidden ? 'max-md:-translate-y-full' : 'max-md:translate-y-0',
-        'md:translate-y-0'
-      )}
+  const mobileMenuContent = (
+    <div
+      ref={mobileMenuRef}
+      id="mobile-nav-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Navigation Menu"
+      className="fixed inset-0 z-[100] flex flex-col bg-paper pt-safe pb-safe px-6 sm:px-8 pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] overflow-y-auto overscroll-contain transition-opacity duration-150"
     >
-      <Container>
-        <div className="flex h-[var(--header-h)] items-center justify-between">
-          {/* Wordmark */}
-          <Link
-            href="/"
-            onClick={closeMenu}
-            className="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-ink transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-ink select-none"
-          >
-            FAMEBROS
-          </Link>
-
-          {/* Desktop Navigation */}
-          <nav
-            aria-label="Main Navigation"
-            className="hidden md:flex items-center gap-8"
-          >
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="font-body text-sm font-semibold tracking-tight text-ink hover:text-ink-soft transition-colors focus-visible:outline-2 focus-visible:outline-ink py-2"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-
-          {/* Desktop WhatsApp CTA */}
-          <div className="hidden md:flex items-center">
-            <Button
-              variant="primary"
-              href={whatsappUrl}
-              arrow="up-right"
-              ariaLabel="Chat on WhatsApp"
-              onClick={() => trackEvent('whatsapp_click', { source: 'header' })}
-            >
-              WhatsApp
-            </Button>
-          </div>
-
-          {/* Mobile Menu Trigger */}
-          <div className="flex md:hidden items-center gap-2">
-            <button
-              ref={menuTriggerRef}
-              type="button"
-              onClick={() => setMobileMenuOpen(true)}
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-nav-dialog"
-              aria-label="Open main menu"
-              className="flex min-h-[44px] min-w-[44px] items-center justify-center border border-line bg-paper text-ink focus-visible:outline-2 focus-visible:outline-ink cursor-pointer"
-            >
-              <Menu className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
-        </div>
-      </Container>
-
-      {/* Full-screen Mobile Menu with overscroll containment and internal scroll */}
-      {mobileMenuOpen && (
-        <div
-          ref={mobileMenuRef}
-          id="mobile-nav-dialog"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Navigation Menu"
-          className="fixed inset-0 z-50 flex flex-col bg-paper pt-safe pb-safe px-4 sm:px-8 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] overflow-y-auto overscroll-contain animate-in fade-in duration-150"
+      {/* Mobile Menu Top Bar */}
+      <div className="flex h-16 sm:h-20 items-center justify-between border-b border-line shrink-0">
+        <Link
+          href="/"
+          onClick={closeMenu}
+          className="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-ink select-none"
         >
-          {/* Mobile Menu Top Bar */}
-          <div className="flex h-16 sm:h-20 items-center justify-between border-b border-line shrink-0">
+          FAMEBROS
+        </Link>
+        <button
+          ref={closeBtnRef}
+          type="button"
+          onClick={closeMenu}
+          aria-label="Close menu"
+          className="flex min-h-[44px] min-w-[44px] items-center justify-center border border-line bg-paper text-ink hover:bg-paper-dark active:scale-95 transition-transform duration-75 focus-visible:outline-2 focus-visible:outline-ink cursor-pointer touch-manipulation"
+        >
+          <X className="h-6 w-6" aria-hidden="true" />
+        </button>
+      </div>
+
+      {/* Mobile Menu Links */}
+      <nav
+        aria-label="Mobile Navigation"
+        className="flex flex-1 flex-col justify-center gap-6 py-8 min-h-[300px]"
+      >
+        {navLinks.map((link, idx) => (
+          <a
+            key={link.href}
+            href={link.href}
+            onClick={closeMenu}
+            className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-ink hover:text-ink-soft active:translate-x-1 transition-transform focus-visible:outline-2 focus-visible:outline-ink"
+          >
+            <span className="font-mono text-sm font-normal text-ink-soft mr-4">
+              0{idx + 1}
+            </span>
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      {/* Mobile WhatsApp Button */}
+      <div className="pb-6 shrink-0">
+        <Button
+          variant="primary"
+          href={whatsappUrl}
+          arrow="up-right"
+          className="w-full justify-center"
+          onClick={() => {
+            trackEvent('whatsapp_click', { source: 'header_menu' });
+            closeMenu();
+          }}
+        >
+          WhatsApp Us
+        </Button>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      <header
+        ref={headerRef}
+        className={cn(
+          'sticky top-0 z-40 w-full border-b border-line bg-paper pt-safe pl-[max(0rem,env(safe-area-inset-left))] pr-[max(0rem,env(safe-area-inset-right))] transition-transform duration-[var(--dur-base)] ease-[var(--ease-out)]',
+          isHidden ? 'max-md:-translate-y-full' : 'max-md:translate-y-0',
+          'md:translate-y-0'
+        )}
+      >
+        <Container>
+          <div className="flex h-[var(--header-h)] items-center justify-between">
+            {/* Wordmark */}
             <Link
               href="/"
               onClick={closeMenu}
-              className="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-ink select-none"
+              className="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-ink transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-ink select-none"
             >
               FAMEBROS
             </Link>
-            <button
-              ref={closeBtnRef}
-              type="button"
-              onClick={closeMenu}
-              aria-label="Close menu"
-              className="flex min-h-[44px] min-w-[44px] items-center justify-center border border-line bg-paper text-ink focus-visible:outline-2 focus-visible:outline-ink cursor-pointer"
-            >
-              <X className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
 
-          {/* Mobile Menu Links */}
-          <nav
-            aria-label="Mobile Navigation"
-            className="flex flex-1 flex-col justify-center gap-6 py-8 min-h-[300px]"
-          >
-            {navLinks.map((link, idx) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={closeMenu}
-                className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-ink hover:text-ink-soft focus-visible:outline-2 focus-visible:outline-ink"
+            {/* Desktop Navigation */}
+            <nav
+              aria-label="Main Navigation"
+              className="hidden md:flex items-center gap-8"
+            >
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="font-body text-sm font-semibold tracking-tight text-ink hover:text-ink-soft transition-colors focus-visible:outline-2 focus-visible:outline-ink py-2"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+
+            {/* Desktop WhatsApp CTA */}
+            <div className="hidden md:flex items-center">
+              <Button
+                variant="primary"
+                href={whatsappUrl}
+                arrow="up-right"
+                ariaLabel="Chat on WhatsApp"
+                onClick={() => trackEvent('whatsapp_click', { source: 'header' })}
               >
-                <span className="font-mono text-sm font-normal text-ink-soft mr-4">
-                  0{idx + 1}
-                </span>
-                {link.label}
-              </a>
-            ))}
-          </nav>
+                WhatsApp
+              </Button>
+            </div>
 
-          {/* Mobile WhatsApp Button */}
-          <div className="pb-6 shrink-0">
-            <Button
-              variant="primary"
-              href={whatsappUrl}
-              arrow="up-right"
-              className="w-full justify-center"
-              onClick={() => {
-                trackEvent('whatsapp_click', { source: 'header_menu' });
-                closeMenu();
-              }}
-            >
-              WhatsApp Us
-            </Button>
+            {/* Mobile Menu Trigger */}
+            <div className="flex md:hidden items-center gap-2">
+              <button
+                ref={menuTriggerRef}
+                type="button"
+                onClick={() => setMobileMenuOpen(true)}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-nav-dialog"
+                aria-label="Open main menu"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center border border-line bg-paper text-ink hover:bg-paper-dark active:scale-95 transition-transform duration-75 focus-visible:outline-2 focus-visible:outline-ink cursor-pointer touch-manipulation z-10"
+              >
+                <Menu className="h-6 w-6" aria-hidden="true" />
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </header>
+        </Container>
+      </header>
+
+      {/* Render mobile menu dialog in portal attached to document body when open */}
+      {mobileMenuOpen && typeof document !== 'undefined'
+        ? createPortal(mobileMenuContent, document.body)
+        : null}
+    </>
   );
 }

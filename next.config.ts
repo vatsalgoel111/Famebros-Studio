@@ -24,17 +24,19 @@ if (mediaHost && mediaHost.trim() !== '') {
   }
 }
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig: NextConfig = {
+  ...(isProd ? { output: 'export' } : {}),
   reactStrictMode: true,
   devIndicators: false,
   compress: true,
   compiler: {
-    removeConsole:
-      process.env.NODE_ENV === 'production'
-        ? {
-            exclude: ['error'],
-          }
-        : false,
+    removeConsole: isProd
+      ? {
+          exclude: ['error'],
+        }
+      : false,
   },
   eslint: {
     ignoreDuringBuilds: true,
@@ -42,9 +44,8 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  // Allow access to remote image placeholder and optional media CDN host.
   images: {
-    formats: ['image/avif', 'image/webp'],
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -57,7 +58,6 @@ const nextConfig: NextConfig = {
   },
   webpack: (config, {dev}) => {
     // HMR is disabled in AI Studio via DISABLE_HMR env var.
-    // Do not modify—file watching is disabled to prevent flickering during agent edits.
     if (dev && process.env.DISABLE_HMR === 'true') {
       config.watchOptions = {
         ignored: /.*/,
