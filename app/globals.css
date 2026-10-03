@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 @theme {
   --color-paper: #F4F1EA;
@@ -10,8 +9,8 @@
   --color-paper-dark: #E9E4D9;
   --color-line-on-dark: rgba(244, 241, 234, 0.16);
 
-  --font-display: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -70,7 +69,7 @@ html {
 body {
   background-color: var(--paper);
   color: var(--ink);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 1rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -143,7 +142,7 @@ h1, h2, h3, h4, h5, h6,
 
 /* Fluid Typography Utilities */
 .text-display {
-  font-family: 'Archivo', sans-serif;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(2.75rem, min(8vw, 13vh), 7rem);
   line-height: 0.95;
   font-weight: 800;
@@ -151,7 +150,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .text-h1 {
-  font-family: 'Archivo', sans-serif;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(2rem, min(4.4vw, 7.5vh), 3.75rem);
   line-height: 1.05;
   font-weight: 700;
@@ -159,7 +158,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .text-h2 {
-  font-family: 'Archivo', sans-serif;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(2rem, min(4.4vw, 7.5vh), 3.75rem);
   line-height: 1.1;
   font-weight: 700;
@@ -167,7 +166,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .text-h3 {
-  font-family: 'Archivo', sans-serif;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(1.25rem, 2vw, 1.75rem);
   line-height: 1.25;
   font-weight: 600;
@@ -175,23 +174,29 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .text-body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
   line-height: 1.6;
 }
 
 .text-small {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 0.875rem;
   line-height: 1.5;
 }
 
 .text-label {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
+}
+
+/* Condensed display variant for large metric numbers */
+.font-display-condensed {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-variation-settings: "wdth" 85;
 }
 
 /* Diagonal hatch pattern for placeholder tiles (CSS only) */

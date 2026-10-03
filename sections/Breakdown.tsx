@@ -263,7 +263,7 @@ export default function BreakdownSection() {
                   <span className="font-mono text-[11px] uppercase tracking-wider text-paper/60">
                     {currentPost.publicMetric ? currentPost.publicMetric.label : 'Metric'}
                   </span>
-                  <div className="font-display text-2xl font-extrabold text-paper">
+                  <div className="font-display font-display-condensed text-2xl font-extrabold text-paper">
                     {currentPost.publicMetric ? currentPost.publicMetric.value : 'Verified'}
                   </div>
                   {currentPost.publicMetric && (

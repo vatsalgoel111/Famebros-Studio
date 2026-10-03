@@ -73,7 +73,7 @@ export default function StyleGuide() {
           {/* 2. Typography Scale */}
           <div>
             <SectionLabel label="02 / Fluid Typography" />
-            <h3 className="font-display text-xl font-bold mt-2 mb-6">Type Scale (Archivo & Inter)</h3>
+            <h3 className="font-display text-xl font-bold mt-2 mb-6">Type Scale (Bricolage Grotesque &amp; Inter)</h3>
             
             <div className="space-y-6 border border-line p-6 bg-paper-dark/20">
               <div>

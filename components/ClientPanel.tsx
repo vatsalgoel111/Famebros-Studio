@@ -365,7 +365,7 @@ export default function ClientPanel({ client, onClose }: ClientPanelProps) {
                 </span>
               </div>
 
-              <div className="font-display text-3xl font-extrabold text-ink">
+              <div className="font-display font-display-condensed text-3xl font-extrabold text-ink">
                 {postWithMetric.publicMetric.value}
               </div>
 

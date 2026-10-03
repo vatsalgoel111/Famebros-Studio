@@ -1,4 +1,5 @@
 import type {NextConfig} from 'next';
+import {PHASE_DEVELOPMENT_SERVER} from 'next/constants';
 
 const mediaHost = process.env.NEXT_PUBLIC_MEDIA_HOST;
 type RemotePattern = {
@@ -24,47 +25,47 @@ if (mediaHost && mediaHost.trim() !== '') {
   }
 }
 
-const isProd = process.env.NODE_ENV === 'production';
+export default function nextConfig(phase: string): NextConfig {
+  const isDev = phase === PHASE_DEVELOPMENT_SERVER;
 
-const nextConfig: NextConfig = {
-  ...(isProd ? { output: 'export' } : {}),
-  reactStrictMode: true,
-  devIndicators: false,
-  compress: true,
-  compiler: {
-    removeConsole: isProd
-      ? {
-          exclude: ['error'],
-        }
-      : false,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: false,
-  },
-  images: {
-    unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        port: '',
-        pathname: '/**',
-      },
-      ...customMediaPattern,
-    ],
-  },
-  webpack: (config, {dev}) => {
-    // HMR is disabled in AI Studio via DISABLE_HMR env var.
-    if (dev && process.env.DISABLE_HMR === 'true') {
-      config.watchOptions = {
-        ignored: /.*/,
-      };
-    }
-    return config;
-  },
-};
-
-export default nextConfig;
+  return {
+    ...(!isDev ? { output: 'export' } : {}),
+    reactStrictMode: true,
+    devIndicators: false,
+    compress: true,
+    compiler: {
+      removeConsole: !isDev
+        ? {
+            exclude: ['error'],
+          }
+        : false,
+    },
+    eslint: {
+      ignoreDuringBuilds: true,
+    },
+    typescript: {
+      ignoreBuildErrors: false,
+    },
+    images: {
+      unoptimized: true,
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'picsum.photos',
+          port: '',
+          pathname: '/**',
+        },
+        ...customMediaPattern,
+      ],
+    },
+    webpack: (config, {dev}) => {
+      // HMR is disabled in AI Studio via DISABLE_HMR env var.
+      if (dev && process.env.DISABLE_HMR === 'true') {
+        config.watchOptions = {
+          ignored: /.*/,
+        };
+      }
+      return config;
+    },
+  };
+}

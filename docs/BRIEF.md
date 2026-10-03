@@ -26,7 +26,7 @@ Recurring motif: a small black-on-yellow **"Managed by Famebros"** credit pill o
   - Ink: `#0E0E0E` (text and strong graphic borders)
   - Accent: `#FFC400` (strictly used for the "Managed by Famebros" credit pill and highlighter marks, always paired with high-contrast black text)
 - **Typography**:
-  - Headlines: *Archivo* (variable width)
+  - Headlines: *Bricolage Grotesque* (variable width)
   - Body & Data: *Inter*
 - **Design Language**:
   - Sharp corners (0 border radius)

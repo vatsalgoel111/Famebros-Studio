@@ -1,7 +1,20 @@
 import type { Metadata, Viewport } from 'next';
+import { Bricolage_Grotesque, Inter } from 'next/font/google';
 import './globals.css';
 import { SHOW_CONTENT_STATUS, siteConfig } from '@/data/site';
 import ContentStatus from '@/components/ContentStatus';
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-display',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-body',
+});
 
 // SET real domain before launch
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
@@ -57,7 +70,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="js" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`js ${bricolage.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
       <body
         className="min-h-screen bg-paper text-ink font-body selection:bg-signal selection:text-ink"
         suppressHydrationWarning

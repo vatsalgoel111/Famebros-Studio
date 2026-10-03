@@ -178,7 +178,7 @@ export default function ProofSection() {
                           verified {metric.verifiedOn}
                         </span>
                       </div>
-                      <div className="font-display text-2xl sm:text-3xl font-extrabold text-ink mt-0.5">
+                      <div className="font-display font-display-condensed text-2xl sm:text-3xl font-extrabold text-ink mt-0.5">
                         {metric.value}
                       </div>
                     </div>
